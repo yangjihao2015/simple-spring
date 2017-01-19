@@ -9,17 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>simple-spring-web</artifactId>
+    <artifactId>simple-spring-beans</artifactId>
 
-    <name>simple-spring-web</name>
+    <name>simple-spring-beans</name>
 
-    <description>simple-spring-web</description>
+    <description>simple-spring-beans</description>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>simple-spring-context</artifactId>
-        </dependency>
 
     </dependencies>
 

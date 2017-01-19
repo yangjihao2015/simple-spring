@@ -21,6 +21,8 @@
 
     <modules>
         <module>simple-spring-web</module>
+        <module>simple-spring-context</module>
+        <module>simple-spring-beans</module>
     </modules>
 
     <properties>
@@ -32,6 +34,16 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>simple-spring-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>simple-spring-context</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>simple-spring-beans</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

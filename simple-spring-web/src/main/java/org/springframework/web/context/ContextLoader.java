@@ -49,7 +49,7 @@ import org.springframework.util.StringUtils;
  * 为根ApplicationContext执行实际的初始化工作
  * 被ContextLoaderListener调用
  *
- * 在web.xml的context-param中查找contextClass（#CONTEXT_CLASS_PARAM）参数，　用来制定上下文的class类型
+ * 在web.xml的context-param中查找contextClass（#CONTEXT_CLASS_PARAM）参数，　用来指定上下文的class类型
  * 如果没有找到，就让给org.springframework.web.context.support.XmlWebApplicationContext
  * 使用默认的ContextLoader实现，　任何指定的上下文类都需要实现ConfigurableWebApplicationContext接口
  *
@@ -80,61 +80,53 @@ import org.springframework.util.StringUtils;
 public class ContextLoader {
 
     /**
-     * Config param for the root WebApplicationContext id,
-     * to be used as serialization id for the underlying BeanFactory: {@value}
+     * 根WebApplicationContext id的配置参数，　被用作底层BeanFactory的serialization id
      */
     public static final String CONTEXT_ID_PARAM = "contextId";
 
     /**
-     * Name of servlet context parameter (i.e., {@value}) that can specify the
-     * config location for the root context, falling back to the implementation's
-     * default otherwise.
+     * servlet上下文参数名, 它用来指定根上下文的配置位置，　否则使用实现的默认值
      * @see org.springframework.web.context.support.XmlWebApplicationContext#DEFAULT_CONFIG_LOCATION
      */
     public static final String CONFIG_LOCATION_PARAM = "contextConfigLocation";
 
     /**
-     * Config param for the root WebApplicationContext implementation class to use: {@value}
+     * 根WebApplicationContext实现类的配置参数
      * @see #determineContextClass(ServletContext)
      */
     public static final String CONTEXT_CLASS_PARAM = "contextClass";
 
     /**
-     * Config param for {@link ApplicationContextInitializer} classes to use
-     * for initializing the root web application context: {@value}
+     * 用来初始化根WebApplicationContext的ApplicationContextInitializer的实现类的配置参数
      * @see #customizeContext(ServletContext, ConfigurableWebApplicationContext)
      */
     public static final String CONTEXT_INITIALIZER_CLASSES_PARAM = "contextInitializerClasses";
 
     /**
-     * Config param for global {@link ApplicationContextInitializer} classes to use
-     * for initializing all web application contexts in the current application: {@value}
+     * 用来初始化当前应用的所有WebApplicationContext的全局ApplicationContextInitializer的配置参数
      * @see #customizeContext(ServletContext, ConfigurableWebApplicationContext)
      */
     public static final String GLOBAL_INITIALIZER_CLASSES_PARAM = "globalInitializerClasses";
 
     /**
-     * Optional servlet context parameter (i.e., "{@code locatorFactorySelector}")
-     * used only when obtaining a parent context using the default implementation
-     * of {@link #loadParentContext(ServletContext servletContext)}.
-     * Specifies the 'selector' used in the
-     * {@link ContextSingletonBeanFactoryLocator#getInstance(String selector)}
-     * method call, which is used to obtain the BeanFactoryLocator instance from
-     * which the parent context is obtained.
-     * <p>The default is {@code classpath*:beanRefContext.xml},
-     * matching the default applied for the
-     * {@link ContextSingletonBeanFactoryLocator#getInstance()} method.
-     * Supplying the "parentContextKey" parameter is sufficient in this case.
+     * 可选的servlet上下文参数，　仅当使用loadParentContext(ServletContext servletContext)的默认实现获取
+     * 父上下文的时候使用．
+     *
+     * 在ContextSingletonBeanFactoryLocator#getInstance(String selector)方法调用中指定该selector,
+     * 它被用作获取BeanFactoryLocator实例.
+     *
+     * 默认值是classpath*:beanRefContext.xml,
+     * 在这种情况下，　提供parentContextKey参数就行了．
      */
     public static final String LOCATOR_FACTORY_SELECTOR_PARAM = "locatorFactorySelector";
 
     /**
-     * Optional servlet context parameter (i.e., "{@code parentContextKey}")
-     * used only when obtaining a parent context using the default implementation
-     * of {@link #loadParentContext(ServletContext servletContext)}.
-     * Specifies the 'factoryKey' used in the
-     * {@link BeanFactoryLocator#useBeanFactory(String factoryKey)} method call,
-     * obtaining the parent application context from the BeanFactoryLocator instance.
+     * 可选的servlet上下文参数，仅当使用loadParentContext(ServletContext servletContext)的默认实现获取
+     * 父上下文时使用
+     *
+     * 在BeanFactoryLocator#useBeanFactory(String factoryKey)方法调用中指定factoryKey，
+     * 从BeanFactoryLocator实例中获取父应用上下文．
+     *
      * <p>Supplying this "parentContextKey" parameter is sufficient when relying
      * on the default {@code classpath*:beanRefContext.xml} selector for
      * candidate factory references.
@@ -142,14 +134,12 @@ public class ContextLoader {
     public static final String LOCATOR_FACTORY_KEY_PARAM = "parentContextKey";
 
     /**
-     * Any number of these characters are considered delimiters between
-     * multiple values in a single init-param String value.
+     * 任何数量的这些字符都被视为单个init-param值中指定的多个值之间的分隔符
      */
     private static final String INIT_PARAM_DELIMITERS = ",; \t\n";
 
     /**
-     * Name of the class path resource (relative to the ContextLoader class)
-     * that defines ContextLoader's default strategy names.
+     * 定义ContextLoader默认策略名的类路径资源（相对于ContextLoader类）的名称
      */
     private static final String DEFAULT_STRATEGIES_PATH = "ContextLoader.properties";
 
@@ -157,7 +147,7 @@ public class ContextLoader {
     private static final Properties defaultStrategies;
 
     static {
-        // Load default strategy implementations from properties file.
+        // 从properties文件中加载默认的策略实现
         // This is currently strictly internal and not meant to be customized
         // by application developers.
         try {
@@ -200,9 +190,8 @@ public class ContextLoader {
 
 
     /**
-     * Create a new {@code ContextLoader} that will create a web application context
-     * based on the "contextClass" and "contextConfigLocation" servlet context-params.
-     * See class-level documentation for details on default values for each.
+     * 创建新的ContextLoader, 它会根据servlet的上下文参数contextClass和contextConfigLocation创建一个WebApplicationContext
+     * 有关每个默认值的详细信息，　请参阅类级别文档
      * <p>This constructor is typically used when declaring the {@code
      * ContextLoaderListener} subclass as a {@code <listener>} within {@code web.xml}, as
      * a no-arg constructor is required.
