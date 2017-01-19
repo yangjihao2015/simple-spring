@@ -34,3 +34,6 @@ catalina.base_IS_UNDEFINED/
 # *.zip
 # *.tar
 # *.tar.gz
+
+# lib ignore
+lib/
